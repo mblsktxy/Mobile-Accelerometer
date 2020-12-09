@@ -1,0 +1,6 @@
+.DS_Store
+bin/
+build/
+lib/
+reference/code/Adafruit_ADS1X15-master
+reference/code/wiringPi-master
