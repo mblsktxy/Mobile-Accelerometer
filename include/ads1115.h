@@ -1,9 +1,9 @@
-/* 
+/*
  * Library for TI ADS1115 Analog-To-Digital Converter
  * Modified from https://github.com/adafruit/Adafruit_ADS1X15
  * Development environment specifics: Odroid XU4
  * Communication protocol: I2C
- * 
+ *
  * Author: Hao Zhou <zhh@umich.edu>
  * Date:   2020-12-7
  */
@@ -172,7 +172,7 @@ public:
 
     uint16_t measureSingleEnded(uint8_t channel = 0);
     int16_t measureDifferential(uint8_t channel = 1);
-    
+
     void configureRegisters();
     void setupDrdyISR();
     void stopContinuousRead();

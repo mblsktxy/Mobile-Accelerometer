@@ -1,6 +1,6 @@
 /*
  * ADS1115 test code
- * 
+ *
  * Author: Hao Zhou <zhh@umich.edu>
  * Date:   2020-12-8
  */
@@ -37,12 +37,12 @@ void setup(void) {
 
 void loop(void) {
     int16_t results;
-  
+
     // Be sure to update this value based on the IC and the gain settings!
     float multiplier = 0.0625;
 
     results = ad.measureDifferential();
-    
+
     printf("Differential: %d (%f mV)\n", results, results * multiplier);
     delay(5);  // Delay milliseconds
 }

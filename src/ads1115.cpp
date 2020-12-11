@@ -1,9 +1,9 @@
-/* 
+/*
  * Library for TI ADS1115 Analog-To-Digital Converter
  * Modified from https://github.com/adafruit/Adafruit_ADS1X15
  * Development environment specifics: Odroid XU4
  * Communication protocol: I2C
- * 
+ *
  * Author: Hao Zhou <zhh@umich.edu>
  * Date:   2020-12-7
  */
@@ -115,7 +115,7 @@ void ADS1115::setHighThreshold(int16_t threshold) {
     highThreshold = threshold;
     highThreshold = __bswap_16(highThreshold);
     wiringPiI2CWriteReg16(fd, ADS1115_REG_POINTER_HITHRESH, highThreshold);
-} 
+}
 
 int16_t ADS1115::getHighThreshold() {
     return highThreshold;
@@ -127,22 +127,22 @@ uint16_t ADS1115::measureSingleEnded(uint8_t channel) {
     if (channel > 3) {
         return 0;
     }
-  
+
     // Start with default values
     uint16_t config = ADS1115_REG_CONFIG_CQUE_NONE    |  // Disable the comparator (default val)
                       ADS1115_REG_CONFIG_CLAT_NONLAT  |  // Non-latching           (default val)
                       ADS1115_REG_CONFIG_CPOL_ACTVLOW |  // Alert/Rdy active low   (default val)
                       ADS1115_REG_CONFIG_CMODE_TRAD;     // Traditional comparator (default val)
-    
+
     // Set Operational status/single-shot conversion start
     config |= adsOSMode;
-    
+
     // Set PGA/voltage range
     config |= adsGain;
-    
+
     // Set Device operating mode
     config |= adsMode;
-    
+
     // Set Data rate
     config |= adsRate;
 
@@ -182,19 +182,19 @@ int16_t ADS1115::measureDifferential(uint8_t channel) {
                       ADS1115_REG_CONFIG_CLAT_NONLAT  |  // Non-latching           (default val)
                       ADS1115_REG_CONFIG_CPOL_ACTVLOW |  // Alert/Rdy active low   (default val)
                       ADS1115_REG_CONFIG_CMODE_TRAD;     // Traditional comparator (default val)
-    
+
     // Set Operational status/single-shot conversion start
     config |= adsOSMode;
-    
+
     // Set PGA/voltage range
     config |= adsGain;
-    
+
     // Set Device operating mode
     config |= adsMode;
-    
+
     // Set Data rate
     config |= adsRate;
-    
+
     // Set Differential input channel
     switch (channel) {
         case (01):
@@ -225,17 +225,17 @@ int16_t ADS1115::measureDifferential(uint8_t channel) {
 
 void ADS1115::configureRegisters() {
     printf("[ADS1115] Configuring registers...\n");
-    
+
     setLowThreshold();
     delayMicroseconds(conversionDelay);
     setHighThreshold();
     delayMicroseconds(conversionDelay);
 
-    // The COMP_POL bit continues to function and the COMP_QUE bits can disable the pin; 
+    // The COMP_POL bit continues to function and the COMP_QUE bits can disable the pin;
     // however, the COMP_MODE and COMP_LAT bits no longer control any function.
     // COMP_QUE bits should be anything other than '11' for the conversion ready (RDY) to show up at the ALERT/RDY pin output.
     // https://e2e.ti.com/support/data-converters/f/73/t/544531?ADS1115-RDY-pin-single-ended-conversion
-    int16_t config = adsOSMode | ADS1115_REG_CONFIG_MUX_DIFF_0_1 | adsGain | ADS1115_REG_CONFIG_MODE_CONTIN | adsRate | 
+    int16_t config = adsOSMode | ADS1115_REG_CONFIG_MUX_DIFF_0_1 | adsGain | ADS1115_REG_CONFIG_MODE_CONTIN | adsRate |
                      adsCompMode | ADS1115_REG_CONFIG_CPOL_ACTVHI | adsCompLat | ADS1115_REG_CONFIG_CQUE_1CONV;
     // Odroid XU4 byte order: little-endian, need to swap the bytes before read or write
     // Linux command: $ lscpu | grep "Byte Order"
