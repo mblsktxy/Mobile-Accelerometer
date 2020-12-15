@@ -237,6 +237,7 @@ void ADS1115::configureRegisters() {
     // https://e2e.ti.com/support/data-converters/f/73/t/544531?ADS1115-RDY-pin-single-ended-conversion
     int16_t config = adsOSMode | ADS1115_REG_CONFIG_MUX_DIFF_0_1 | adsGain | ADS1115_REG_CONFIG_MODE_CONTIN | adsRate |
                      adsCompMode | ADS1115_REG_CONFIG_CPOL_ACTVHI | adsCompLat | ADS1115_REG_CONFIG_CQUE_1CONV;
+    fprintf(fp, "ADS1115 CONFIG: 0x%04x\n", config & 0xffff);
     // Odroid XU4 byte order: little-endian, need to swap the bytes before read or write
     // Linux command: $ lscpu | grep "Byte Order"
     config = __bswap_16(config);
